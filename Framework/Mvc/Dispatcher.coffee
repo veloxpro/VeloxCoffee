@@ -23,7 +23,7 @@ class Velox.Framework.Mvc.Dispatcher
   setAction: (action) ->
     @_action = action
 
-  dispatch: () ->
+  dispatch: (params = []) ->
     if @_component == null
       throw 'Dispatcher requires "component" to dispatch'
     if @_controller == null
@@ -44,7 +44,7 @@ class Velox.Framework.Mvc.Dispatcher
     controller = new controllerClass();
 
     if controller[@_action + 'Action']?
-      return controller[@_action + 'Action']()
+      return controller[@_action + 'Action'].apply(controller, params)
     else
       throw '' + @_action + 'Action doesn\'t exist in ' + classFqn.join('.')
 
